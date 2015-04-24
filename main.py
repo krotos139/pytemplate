@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import xml.etree.ElementTree as ET
+#from lxml import objectify
 import jinja2
 from jinja2 import Environment, PackageLoader, FileSystemLoader, BaseLoader, nodes
 from jinja2.ext import Extension
@@ -29,17 +30,25 @@ def load_csv(context, arg):
 @jinja2.contextfunction
 def load_xml(context, arg):
 	logging.info("Read XML (%s)" % arg)
+	#e = objectify.parse(arg)
 	e = ET.parse(arg).getroot()
+
+	logging.info("e = %s" % str(e))
 	return e
+
+@jinja2.contextfunction
+def le(context, arg):
+	return arg.replace("_", "\_")
 
 def main(options):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 	logging.info("Read template")
-	env = Environment(loader=FileSystemLoader(".", encoding='utf-8'))
+	env = Environment(loader=FileSystemLoader(".", encoding='utf-8'), extensions=["jinja2.ext.do",])
 	template = env.get_template(options.template)
 
 	env.globals.update(load_csv = load_csv)
 	env.globals.update(load_xml = load_xml)
+	env.globals.update(le = le)
 
 	logging.info("Template rendering...")
 	output_data = template.render( )
