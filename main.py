@@ -40,6 +40,17 @@ def load_xml(context, arg):
 def le(context, arg):
 	return arg.replace("_", "\_")
 
+@jinja2.contextfunction
+def log(context, arg):
+	logging.debug(arg)
+	return ""
+
+@jinja2.contextfunction
+def load_text(context, arg):
+	logging.info("Read TEXT file (%s)" % arg)
+	f = open(arg, 'r')
+	return f.read().decode('utf-8')
+
 def main(options):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 	logging.info("Read template")
@@ -49,6 +60,8 @@ def main(options):
 	env.globals.update(load_csv = load_csv)
 	env.globals.update(load_xml = load_xml)
 	env.globals.update(le = le)
+	env.globals.update(log = log)
+	env.globals.update(load_text = load_text)
 
 	logging.info("Template rendering...")
 	output_data = template.render( )
@@ -67,10 +80,10 @@ parser.add_option("-o", "--output", help="File to save data", type="string")
 
 
 if __name__ == "__main__":
-	parser.print_help()
 	(options, args) = parser.parse_args()
 	if (not options.template) or (not options.output):
 		parser.error("set options -t and -o")
+		parser.print_help()
 
 	main(options)
 
