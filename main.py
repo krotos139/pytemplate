@@ -10,6 +10,8 @@ import csv
 import sys
 import logging
 from optparse import OptionParser
+import hashlib
+import os
 
 def UnicodeDictReader(utf8_data, **kwargs):
 	csv_reader = csv.DictReader(utf8_data, **kwargs)
@@ -37,7 +39,17 @@ def load_xml(context, arg):
 	return e
 
 @jinja2.contextfunction
+def load_text(context, arg):
+	logging.info("Read TEXT file (%s)" % arg)
+	f = open(arg, 'r')
+	result = f.read()
+	f.close()
+	return result.decode('utf-8')
+
+@jinja2.contextfunction
 def le(context, arg):
+	if arg == None:
+		return ""
 	return arg.replace("_", "\_")
 
 @jinja2.contextfunction
@@ -46,10 +58,17 @@ def log(context, arg):
 	return ""
 
 @jinja2.contextfunction
-def load_text(context, arg):
-	logging.info("Read TEXT file (%s)" % arg)
-	f = open(arg, 'r')
-	return f.read().decode('utf-8')
+def file_md5(context, arg):
+	logging.info("File (%s) -> MD5" % arg)
+	f = open(arg, 'rb')
+	result = hashlib.md5(f.read()).hexdigest()
+	f.close()
+	return result.decode('utf-8')
+
+@jinja2.contextfunction
+def file_stat(context, arg):
+	logging.info("File (%s) stat" % arg)
+	return os.stat(arg)
 
 def main(options):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
@@ -59,9 +78,11 @@ def main(options):
 
 	env.globals.update(load_csv = load_csv)
 	env.globals.update(load_xml = load_xml)
+	env.globals.update(load_text = load_text)
 	env.globals.update(le = le)
 	env.globals.update(log = log)
-	env.globals.update(load_text = load_text)
+	env.globals.update(file_md5 = file_md5)
+	env.globals.update(file_stat = file_stat)
 
 	logging.info("Template rendering...")
 	output_data = template.render( )
