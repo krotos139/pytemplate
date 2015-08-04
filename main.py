@@ -12,6 +12,7 @@ import logging
 from optparse import OptionParser
 import hashlib
 import os
+import secretary
 
 def UnicodeDictReader(utf8_data, **kwargs):
 	csv_reader = csv.DictReader(utf8_data, **kwargs)
@@ -72,10 +73,9 @@ def file_stat(context, arg):
 
 def main(options):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-	logging.info("Read template")
+	
+	logging.info("Load Environment")
 	env = Environment(loader=FileSystemLoader(".", encoding='utf-8'), extensions=["jinja2.ext.do",])
-	template = env.get_template(options.template)
-
 	env.globals.update(load_csv = load_csv)
 	env.globals.update(load_xml = load_xml)
 	env.globals.update(load_text = load_text)
@@ -84,20 +84,37 @@ def main(options):
 	env.globals.update(file_md5 = file_md5)
 	env.globals.update(file_stat = file_stat)
 
-	logging.info("Template rendering...")
-	output_data = template.render( )
+	if (options.format == "odt"):
+		logging.info("Read ODT template")
+		engine = secretary.Renderer(environment=env)
+		template = open(options.template, 'rb')
+		logging.info("Template rendering...")
+		output_data = engine.render(template)
+		logging.info("Template rendering done")
+		output_file = open(options.output, 'wb')
+		output_file.write(output_data)
+		output_file.close()
+		logging.info("Done")
 
-	logging.info("Template rendering done")
+	elif (options.format == "text"):
+		logging.info("Read TEXT template")
+		template = env.get_template(options.template)
+		logging.info("Template rendering...")
+		output_data = template.render( )
+		logging.info("Template rendering done")
+		output_file = open(options.output, 'wb')
+		output_file.write(output_data.encode('utf8'))
+		output_file.close()
+		logging.info("Done")
+	else:
+		logging.info("Error format")
 
-	logging.info("Write output data...")
-	output_file = open(options.output, 'wb')
-	output_file.write(output_data.encode('utf8'))
-	output_file.close()
-	logging.info("Done")
 
-parser = OptionParser(version='0.1', description='Python programm to processing template')
+parser = OptionParser(version='0.3', description='Python programm to processing template')
 parser.add_option("-t", "--template", help="File with template", type="string")
 parser.add_option("-o", "--output", help="File to save data", type="string")
+parser.add_option("-f", "--format", help="Template file format", type="choice", choices=['text', 'odt',], default='text')
+
 
 
 if __name__ == "__main__":
