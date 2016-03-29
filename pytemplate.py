@@ -133,7 +133,7 @@ def main(options):
 		logging.info("Error format")
 
 
-parser = OptionParser(version='0.3', description='Python programm to processing template')
+parser = OptionParser(version='0.4', description='Python programm to processing template')
 parser.add_option("-t", "--template", help="File with template", type="string")
 parser.add_option("-o", "--output", help="File to save data", type="string")
 parser.add_option("-f", "--format", help="Template file format", type="choice", choices=['text', 'odt',], default='text')
