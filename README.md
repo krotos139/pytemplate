@@ -117,5 +117,5 @@ Usage: pytemplate.py [options]
 Дополнительная сущность для шаблона
 
 # Примеры сгенерированных документов:
-* Latex document: [IN](/examples/out_doc1.tex) -> [OUT](/examples/output/out_doc1.pdf)
+* Latex document: [IN](/examples/out_doc1.tex) + [IN 1](/examples/out_doc1_part1.template.tex) + [IN 2](/examples/out_doc1_part2.template.tex) + [IN 3](/examples/out_doc1_part3.template.tex) + [IN 4](/examples/out_doc1_part4.template.tex) + [IN 5](/examples/out_doc1_part5.template.tex) -> [OUT](/examples/output/out_doc1.pdf)
 * ODT document: [IN](/examples/out_doc2.odt) -> [OUT](/examples/output/out_doc2_ready.odt)
