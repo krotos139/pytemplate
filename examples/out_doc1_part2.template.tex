@@ -1,0 +1,16 @@
+{%- set docs = load_csv("database2.csv")  %}
+\subsection{Список документов}
+
+\begin{longtable}{|m{2cm}|m{3cm}|m{3cm}|m{3cm}|m{3cm}|}
+\caption{Списки документов} \label{tab:reports}\\\hline
+{\centering Код} & {\centering Наименование} & {\centering Стандарт} & {\centering Децимальный номер} & {\centering Инвентарный} \\\hline
+\endfirsthead
+\caption*{\it{Продолжение таблицы} \ref{tab:reports}}\\\hline
+{\centering Код} & {\centering Наименование} & {\centering Стандарт} & {\centering Децимальный номер} & {\centering Инвентарный} \\\hline
+\endhead
+{%- for item in docs %}
+{{ item.id }} & {{ item.name }} & {{ item.ref }} & {{ item.sign }} & {{ item.inv }} \\\hline
+{%- endfor %}
+\end{longtable}
+\newpage
+

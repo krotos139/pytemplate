@@ -1,0 +1,35 @@
+<software>
+	<name>Программное обеспечение</name>
+	<sign>AAAA.12345</sign>
+	<date>20.01.2015</date>
+	<version>1.82</version>
+	<releasedate>30.04.2015</releasedate>
+	<product>
+			<name>ПО1</name>
+			<sign>ББББ.11111.001</sign>
+			<fullname>Модуль</fullname>
+			<version>3</version>
+	</product>
+	<stend>
+			<name>Стенд проверки 1</name>
+			<sign>ВВВВ.222222.002</sign>
+			<fullname>Локальный стенд проверки</fullname>
+			<version>1</version>
+	</stend>
+	<hardware>
+		<i>
+			<name>Аппаратура 1</name>
+			<sign>ВВВВ.123123.001</sign>
+			<fullname>Модуль мезонинный</fullname>
+			<version>3</version>
+		</i>
+		<i>
+			<name>Аппаратура 2</name>
+			<sign>ВВВВ.123123.002</sign>
+			<fullname>Вычислительный модуль</fullname>
+			<version>3</version>
+		</i>
+
+	</hardware>
+	<copyright>Яковлев Ю.В.</copyright>
+</software>

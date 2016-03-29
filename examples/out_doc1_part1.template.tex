@@ -1,0 +1,23 @@
+{%- set root = load_xml("database1.xml") %}
+
+\section{Описание ПО}
+Данный документ описывает <<{{ root.find('name').text }}>>. 
+Программа имеет децимальный номер <<{{ root.find('sign').text }}>>. 
+
+Дата начала разработки ПО <<{{ root.find('date').text }}>>. 
+Версия ПО <<{{ root.find('version').text }}>>. 
+Дата выпуска <<{{ root.find('releasedate').text }}>>. 
+Авторское право <<{{ root.find('copyright').text }}>>. 
+
+Для работы ПО необходимо оборудование. Перечень приведен в таблице~\ref{tab:hw}.
+\begin{longtable}{|m{5cm}|m{5cm}|m{5cm}|}
+\caption{Аппаратные средства} \label{tab:hw}\\\hline
+{\centering Наименование} & {\centering Обозначение/Версия} & {\centering ПОлное наименование} \\\hline
+\endhead
+{%- for item in root.findall("hardware/i") %}
+{{ item.find("name").text }} & {{ item.find("sign").text }} / {{ item.find("version").text }} & {{ item.find("fullname").text }} \\\hline
+{%- endfor %}
+\end{longtable}
+\newpage
+
+

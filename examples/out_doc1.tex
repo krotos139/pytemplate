@@ -1,0 +1,51 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphics}
+\usepackage{xspace}
+\usepackage{fancyhdr}
+
+\graphicspath{{img/}}
+
+\def\@xobeysp{ }
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{Некая фирма}
+\fancyhead[R]{Пример}
+\fancyfoot[L]{Документ1}
+\fancyfoot[R]{\thepage}
+\fancyfoot[C]{}
+\fancyheadoffset{0mm}
+\fancyfootoffset{0mm}
+\setlength{\headheight}{17pt}
+
+
+\begin{document}
+
+\section{Документ}
+Пример тенерации tex документа.
+
+\section{Контент из XML}
+\input{out_doc1_part1}
+
+\section{Контент из CSV}
+\input{out_doc1_part2}
+
+\section{Контент из SQLite}
+\input{out_doc1_part3}
+
+\section{Контент из текстового файла}
+\input{out_doc1_part4}
+
+\section{Контент из Файловой системы}
+\input{out_doc1_part5}
+
+\end{document}

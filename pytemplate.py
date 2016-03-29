@@ -59,7 +59,7 @@ def load_text(context, arg):
 def le(context, arg):
 	if arg == None:
 		return ""
-	return arg.replace("_", "\_")
+	return arg.replace("_", "\_").replace("&","\&")
 
 @jinja2.contextfunction
 def log(context, arg):
