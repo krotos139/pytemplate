@@ -1,0 +1,7 @@
+\subsection{Информация о PyTemplate}
+
+{%- set sourcefile = "../pytemplate.py" %}
+{%- set stat = file_stat(sourcefile) %}
+{%- set md5 = file_md5(sourcefile) %}
+
+Файл <<{{ sourcefile }}>> имеет размер {{ stat.st_size }} и контрольную сумму <<{{md5}}>>.

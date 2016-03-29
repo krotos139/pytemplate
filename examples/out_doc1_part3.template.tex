@@ -1,0 +1,20 @@
+{%- set db = load_sqlite("database3.sqlite") %}
+
+\section{Список Альбомов}
+{%- set alboum = db.execute("select * from Album") %}
+
+\begin{longtable}{|m{2cm}|m{6cm}|}
+\caption{Списки документов} \label{tab:alboum}\\\hline
+{\centering Код} & {\centering Наименование} \\\hline
+\endfirsthead
+\caption*{\it{Продолжение таблицы} \ref{tab:alboum}}\\\hline
+{\centering Код} & {\centering Наименование} \\\hline
+\endhead
+{%- for item in alboum %}
+{%- do log("Add alboum %s (authorid=%d)" % (item[1], item[2])) %}
+{{ item[0] }} & {{ le(item[1]) }} \\\hline
+{%- endfor %}
+\end{longtable}
+\newpage
+
+
