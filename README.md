@@ -21,47 +21,57 @@
 Принимает аргумент - имя файла
 Возращает - root element
 Пример использования:
+```
     {%- set root = load_xml("database1.xml") %}
     {%- for item in root.findall("hardware/i") %}
     {{ item.find("name").text }} & {{ item.find("sign").text }} / {{ item.find("version").text }} & {{ item.find("fullname").text }} \\\hline
     {%- endfor %}
+```
 
 ## load_csv
 Позволяет загружать табличные данные из CSV файла
 Принимает аргумент - имя файла
 Возращает - итератор
 Пример использования:
+```
     {%- set docs = load_csv("database2.csv")  %}
     {%- for item in docs %}
     {{ item.id }} & {{ item.name }} & {{ item.ref }} & {{ item.sign }} & {{ item.inv }} \\\hline
     {%- endfor %}
+```
 
 ## load_sqlite
 Позволяет загружать данные из SQLite базы данных
 Принимает аргумент - имя файла
 Возращает - курсор
 Пример использования:
+```
     {%- set db = load_sqlite("database3.sqlite") %}
     {%- set alboum = db.execute("select * from Album") %}
     {%- for item in alboum %}
     {{ item[0] }} & {{ le(item[1]) }} \\\hline
     {%- endfor %}
+```
 
 ## load_text
 Позволяет загружать текстовые данные из файла
 Принимает аргумент - имя файла
 Возращает - строку
 Пример использования:
+```
     {%- set content = load_text("database4.txt") %}
     {{ content }}
+```
 
 ## file_md5
 Позволяет подсчитать контрольную сумму файла
 Принимает аргумент - имя файла
 Возращает - строку
 Пример использования:
+```
     {%- set md5 = file_md5(sourcefile) %}
     {{md5}}
+```
 
 ## file_stat
 Позволяет получить информацию о файле (размер)
@@ -87,14 +97,18 @@
 * st_attrs (attributes)
 * st_obtype (object type).
 Пример использования:
+```
     {%- set stat = file_stat(sourcefile) %}
     {{ stat.st_size }}
+```
 
 ## log
 Позволяет выводить сообщения в консоль при разборе шаблона
 Принимает аргумент - строка
 Пример использования:
+```
     {%- do log("Add alboum %s (authorid=%d)" % (item[1], item[2])) %}
+```
 
 ## getargs
 Позволяет получить аргументы запуска из командной строки
