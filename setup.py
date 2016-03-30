@@ -2,11 +2,16 @@ from setuptools import setup, find_packages
 from os.path import join, dirname
 
 setup(
-    name='pytemplate',
-    version='0.4',
+    name='pytemplateproc',
+    version='0.4.2',
     packages=find_packages(),
-    scripts = ['pytemplate.py', 'secretary.py'],
+    scripts = [
+	    'pytemplate.py', 
+	    'secretary.py',
+	    'tests.py'],
     install_requires = ['jinja2'],
+    test_suite='tests',
+    include_package_data=True,
 #    entry_points={
 #	    'pytemplate': [
 #		    'pytemplate = pytemplate',
