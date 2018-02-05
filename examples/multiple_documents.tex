@@ -1,0 +1,6 @@
+{%- set docs = load_csv("database2.csv")  %}
+{%- for item in docs %}
+{% set _ = global_var.update({"item":item}) %}
+{{ odt_template("out_doc3.odt", "output/"+item.id+"_out_doc3.odt") }}
+Генерация документа {{ item.id }}
+{%- endfor %}

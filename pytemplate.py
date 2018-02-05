@@ -15,11 +15,43 @@ import hashlib
 import os
 import secretary
 
+global global_var
+global_var = {}
+
 def UnicodeDictReader(utf8_data, **kwargs):
 	csv_reader = csv.DictReader(utf8_data, **kwargs)
 	for row in csv_reader:
 		yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
 
+
+@jinja2.contextfunction
+def text_template(context, arg_template, arg_output):
+	global env
+	logging.info("Process TEXT template (template:%s, output:%s)" % (arg_template, arg_output))
+	template = env.get_template(arg_template)
+	logging.info("Template rendering...")
+	output_data = template.render( )
+	logging.info("Template rendering done")
+	output_file = open(arg_output, 'wb')
+	output_file.write(output_data.encode('utf8'))
+	output_file.close()
+	logging.info("Done")
+	return ""
+
+@jinja2.contextfunction
+def odt_template(context, arg_template, arg_output):
+	global env
+	logging.info("Process TEXT template (template:%s, output:%s)" % (arg_template, arg_output))
+	engine = secretary.Renderer(environment=env)
+	template = open(arg_template, 'rb')
+	logging.info("Template rendering...")
+	output_data = engine.render(template)
+	logging.info("Template rendering done")
+	output_file = open(arg_output, 'wb')
+	output_file.write(output_data)
+	output_file.close()
+	logging.info("Done")
+	return ""
 
 @jinja2.contextfunction
 def load_csv(context, arg):
@@ -89,13 +121,14 @@ def main(options):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 	global arguments
+	global env
 	arguments = ""
 	if (options.arg):
 		exec("%s = %s" % ("tmp",  options.arg))
 		arguments = tmp
 	
 	logging.info("Load Environment")
-	env = Environment(loader=FileSystemLoader(".", encoding='utf-8'), extensions=["jinja2.ext.do",])
+	env = Environment(loader=FileSystemLoader(".", encoding='utf-8'), extensions=["jinja2.ext.do",], autoescape=True)
 	env.globals.update(load_csv = load_csv)
 	env.globals.update(load_xml = load_xml)
 	env.globals.update(load_sqlite = load_sqlite)
@@ -105,6 +138,10 @@ def main(options):
 	env.globals.update(file_md5 = file_md5)
 	env.globals.update(file_stat = file_stat)
 	env.globals.update(getarg = getarg)
+	env.globals.update(text_template = text_template)
+	env.globals.update(odt_template = odt_template)
+	env.globals.update(global_var = global_var)
+	
 
 
 	if (options.format == "odt"):

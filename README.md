@@ -114,6 +114,22 @@
 Позволяет получить аргументы запуска из командной строки
 Возвращает значение - сущность, описанная на python в параметре "arg"
 
+## text_template
+Позволяет обрабатывать отдельный тексторый шаблон
+
+## odt_template
+Позволяет обрабатывать отдельный шаблон в формате OpenDocument
+Пример использования:
+```
+    {%- set docs = load_csv("database2.csv")  %}
+    {%- for item in docs %}
+    {% set _ = global_var.update({"item":item}) %}
+    {{ odt_template("out_doc3.odt", "output/"+item.id+"_out_doc3.odt") }}
+    Генерация документа {{ item.id }}
+    {%- endfor %}
+```
+
+
 # Запуск программы
 Usage: pytemplate.py [options]
 Опции:
