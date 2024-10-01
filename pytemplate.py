@@ -21,10 +21,10 @@ global_var = {}
 def UnicodeDictReader(utf8_data, **kwargs):
 	csv_reader = csv.DictReader(utf8_data, **kwargs)
 	for row in csv_reader:
-		yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
+		yield dict([(key, str(value)) for key, value in row.items()])
 
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def text_template(context, arg_template, arg_output):
 	global env
 	logging.info("Process TEXT template (template:%s, output:%s)" % (arg_template, arg_output))
@@ -38,7 +38,7 @@ def text_template(context, arg_template, arg_output):
 	logging.info("Done")
 	return ""
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def odt_template(context, arg_template, arg_output):
 	global env
 	logging.info("Process TEXT template (template:%s, output:%s)" % (arg_template, arg_output))
@@ -53,7 +53,7 @@ def odt_template(context, arg_template, arg_output):
 	logging.info("Done")
 	return ""
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def load_csv(context, arg):
 	logging.info("Read CSV (%s)" % arg)
 	csvfile = open(arg, 'rt')
@@ -63,7 +63,7 @@ def load_csv(context, arg):
 	logging.info("Read %d lines" % len(csvdata))
 	return csvdata
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def load_xml(context, arg):
 	logging.info("Read XML (%s)" % arg)
 	#e = objectify.parse(arg)
@@ -72,14 +72,14 @@ def load_xml(context, arg):
 	logging.info("e = %s" % str(e))
 	return e
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def load_sqlite(context, arg):
 	logging.info("Read SQLite (%s)" % arg)
 	conn = sqlite3.connect(arg)
 	c = conn.cursor()
 	return c
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def load_text(context, arg):
 	logging.info("Read TEXT file (%s)" % arg)
 	f = open(arg, 'r')
@@ -87,18 +87,18 @@ def load_text(context, arg):
 	f.close()
 	return result.decode('utf-8')
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def le(context, arg):
 	if arg == None:
 		return ""
 	return arg.replace("_", "\_").replace("&","\&")
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def log(context, arg):
 	logging.debug(arg)
 	return ""
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def file_md5(context, arg):
 	logging.info("File (%s) -> MD5" % arg)
 	f = open(arg, 'rb')
@@ -106,12 +106,12 @@ def file_md5(context, arg):
 	f.close()
 	return result.decode('utf-8')
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def file_stat(context, arg):
 	logging.info("File (%s) stat" % arg)
 	return os.stat(arg)
 
-@jinja2.contextfunction
+@jinja2.pass_context
 def getarg(context):
 	logging.info("Get arguments")
 	global arguments
